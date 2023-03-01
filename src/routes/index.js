@@ -1,7 +1,6 @@
 const { Router } = require('express');
 require('dotenv').config();
-const { validatorHandler } = require('../middleware/validatorhandler');
-const { schemaFilter, schemaName } = require('../schema/schemaDogs');
+const { validationQuery, validationID, validationPOST } = require('../middleware/validationHandler')
 const { filterByIdAPI, APIDogs, filterByNameAPI } = require('../controllers/dogsAPI');
 const { Dog, Temperament} = require('../db')
 // Importar todos los routers;
@@ -13,21 +12,19 @@ const router = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-router.get('/dogs', (req, res) => {
+router.get('/dogs', validationQuery(), (req, res) => {
     if(!req.query.hasOwnProperty('name')){
         APIDogs(req, res);
         return;
     }
-    validatorHandler(schemaName, 'query'),
     filterByNameAPI(req, res)
 });
 
-router.get('/dogs/:id', validatorHandler(schemaFilter, 'params'), 
-    async (req, res) => {
+router.get('/dogs/:id', validationID(), async (req, res) => {
     await filterByIdAPI(req, res)   
 });
 
-router.post('/dogs', async (req, res) => {
+router.post('/dogs', validationPOST(), async (req, res) => {
     try {
         // Create the dog
         const dog = await Dog.create(req.body);
