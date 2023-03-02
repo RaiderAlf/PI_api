@@ -43,7 +43,7 @@ const validationPOST = () => {
     return (req, res, next) => {
         const data = req.body;
 
-        if(data.hasOwnProperty('name') && data.hasOwnProperty('weight') && data.hasOwnProperty('height') && data.hasOwnProperty('lifeSpan') && data.hasOwnProperty('image') && data.hasOwnProperty('temperament')){
+        if(data.hasOwnProperty('name') && data.hasOwnProperty('weightMin') && data.hasOwnProperty('weightMax') && data.hasOwnProperty('heightMin') && data.hasOwnProperty('heightMax') && data.hasOwnProperty('lifeSpan') && data.hasOwnProperty('image') && data.hasOwnProperty('temperament')){
             return next();
         };
 

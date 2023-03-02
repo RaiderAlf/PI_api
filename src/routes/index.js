@@ -1,17 +1,20 @@
+//IMPORTS
 const { Router } = require('express');
 require('dotenv').config();
-const { validationQuery, validationID, validationPOST } = require('../middleware/validationHandler')
-const { filterByIdAPI, APIDogs, filterByNameAPI } = require('../controllers/dogsAPI');
-const { Dog, Temperament} = require('../db')
+//MIDDLEWARES
+const { validationQuery, validationID, validationPOST } = require('../middleware/validationHandler');
+//CONTROLLERS
+const { filterByIdAPI, APIDogs, filterByNameAPI, addDB, getTemperament } = require('../controllers/dogsAPI');
+
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
-
 
 const router = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
+//GET ALL DOGS FROM API AND DB & BY QUERY NAME
 router.get('/dogs', validationQuery(), (req, res) => {
     if(!req.query.hasOwnProperty('name')){
         APIDogs(req, res);
@@ -20,27 +23,19 @@ router.get('/dogs', validationQuery(), (req, res) => {
     filterByNameAPI(req, res)
 });
 
+//GET DOG FROM API BY ID
 router.get('/dogs/:id', validationID(), async (req, res) => {
     await filterByIdAPI(req, res)   
 });
 
+//CREATE DOG IN DB
 router.post('/dogs', validationPOST(), async (req, res) => {
-    try {
-        // Create the dog
-        const dog = await Dog.create(req.body);
-        // Get the list of temperament ids from the request
-        const temperaments = req.body.temperaments;
-        // Create the relations between the dog and the temperaments
-        await dog.setTemperaments(temperaments);
-        // Get the updated dog with all the relations
-        const updatedDog = await Dog.findById(dog.id, {
-          include: [{ model: Temperament }]
-        });
-        // Send the response
-        res.status(200).json(updatedDog);
-      } catch (err) {
-        res.status(400).json({ error: err.message });
-      }
+    await addDB(req, res)
+});
+
+//GET TEMPERAMENTS FROM DB
+router.get('/temperaments', async (req, res) => {
+  await getTemperament(req, res)
 })
 
 module.exports = router;
