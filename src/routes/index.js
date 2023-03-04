@@ -1,6 +1,7 @@
+//----------------------------------------------------------ROUTES-----------------------------------------//
+
 //IMPORTS
 const { Router } = require('express');
-require('dotenv').config();
 //MIDDLEWARES
 const { validationQuery, validationID, validationPOST } = require('../middleware/validationHandler');
 //CONTROLLERS

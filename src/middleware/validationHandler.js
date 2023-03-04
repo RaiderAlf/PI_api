@@ -1,3 +1,5 @@
+// -------------------------------------------------- MIDDLEWARE ------------------------------------------------------//
+
 //Validation Query Client
 const validationQuery = () => {
     return (req, res, next) => {
@@ -8,15 +10,16 @@ const validationQuery = () => {
             const matches = data.match(regex);
 
             if(!matches){
+                //ERROR VALIDATION
                 res.status(400).json({
                     error: `${data} is invalid`,
                     message: 'Must be a string'
                 });
                 return;
-            }
+            };
             return next();
-        }
-        next();
+        };
+        return next();
     };
 };
 
@@ -29,12 +32,13 @@ const validationID = () => {
         const matches = data.match(regex);
 
         if(!matches){
+            //ERROR VALIDATION
             res.status(400).json({
                 error : `${data} is invalid`,
                 message : 'Must be a number'
             });
             return;
-        }
+        };
         return next();
     };
 };
@@ -47,6 +51,7 @@ const validationPOST = () => {
             return next();
         };
 
+        //ERROR VALIDATION
         res.status(400).json({
             error : 'Missing Information'
         });

@@ -1,4 +1,8 @@
+//---------------------------------------SERVICES------------------------------//
+
+//IMPORTS
 const axios = require('axios');
+//MODELS DB
 const { Dog, Temperament } = require('../db');
 
 //INFO MAPPING
@@ -31,7 +35,11 @@ const dataAPI = async (API) => {
 //DATABASE FETCH
 const DBDogs = async ( ) =>{
 
-    return response = await Dog.findAll();
+    return response = await Dog.findAll({
+        include : {
+            model : Temperament
+        }
+    });
 
 };
 
@@ -64,7 +72,7 @@ const temperamentsDB = async (api) => {
     });
 
     return await Temperament.findAll();
-}
+};
 
 //CREATE DOG IN DB
 const createDog = async (req) => {
@@ -75,8 +83,7 @@ const createDog = async (req) => {
         heightMax,  
         weightMin,
         weightMax, 
-        lifeSpan, 
-        createdInDb, 
+        lifeSpan,
         temperament 
       } = req.body;
     
@@ -88,8 +95,7 @@ const createDog = async (req) => {
         image, 
         height,
         weight,
-        lifeSpan, 
-        createdInDb, 
+        lifeSpan,
       });
     
       const temperamentDB = await Temperament.findAll({
