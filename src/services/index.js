@@ -102,7 +102,7 @@ const createDog = async (req) => {
         where : { name : temperament }
       });
     
-      dogCreated.addTemperament(temperamentDB);
+      await dogCreated.addTemperament(temperamentDB);
 
       return dogCreated;
 };
