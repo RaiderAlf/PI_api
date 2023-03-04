@@ -11,7 +11,7 @@ const indexInf = async (info) => {
         return {
             id: dog.id,
             name: dog.name.toLowerCase(),
-            // temperament: dog.temperament,
+            temperament: dog.temperament,
             weight: dog.weight.metric,
             height : dog.height.metric,
             lifeSpan: dog.life_span,
