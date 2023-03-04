@@ -57,21 +57,25 @@ const filterDogs = (name, allDogs) => {
 //GET ALL TEMPERAMENTS
 const temperamentsDB = async (api) => {
 
-    const tempAPI = await dataAPI(api);
-    const temperaments = tempAPI.map(el => el.temperament);
+    const tempDB = await Temperament.findAll();
 
-    let dataTamperament = temperaments.join().split(',');
-    dataTamperament = dataTamperament.map( el => el.trim());
+    if( await tempDB.length < 1){
+        const tempAPI = await dataAPI(api);
+        const temperaments = tempAPI.map(el => el.temperament);
 
-    dataTamperament.forEach (el => {
-        if(el !== '') {
-            Temperament.findOrCreate({
-                where: { name: el }    
-            });
-        };
-    });
+        let dataTamperament = temperaments.join().split(',');
+        dataTamperament = dataTamperament.map( el => el.trim());
 
-    return await Temperament.findAll();
+        dataTamperament.forEach (el => {
+            if(el !== '') {
+                Temperament.findOrCreate({
+                    where: { name: el }    
+                });
+            };
+        });
+    };
+
+    return await tempDB;
 };
 
 //CREATE DOG IN DB
