@@ -9,7 +9,7 @@ const { API_KEY } = process.env;
 
 //RES BY GET ALLDOGS
 const APIDogs = async (req, res) => {
-    const allDogs = [... await dataAPI(API_KEY), ... await DBDogs()];
+    const allDogs = [ ... await DBDogs(),... await dataAPI(API_KEY)];
 
     //SUCCESS RES
     res.status(200).json({
