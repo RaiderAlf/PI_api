@@ -35,7 +35,7 @@ router.post('/dogs', validationPOST(), async (req, res) => {
 });
 
 //GET TEMPERAMENTS FROM DB
-router.get('/temperaments', async (req, res) => {
+router.get('/temperament', async (req, res) => {
   await getTemperament(req, res)
 })
 
