@@ -35,11 +35,24 @@ const dataAPI = async (API) => {
 //DATABASE FETCH
 const DBDogs = async ( ) =>{
 
-    return response = await Dog.findAll({
-        include : {
-            model : Temperament
+    const response = await Dog.findAll({
+        include: Temperament
+    })
+
+    let dogList = []
+    dogList = await response.map(dog => {
+        return {
+            id: dog.id,
+            name: dog.name.toLowerCase(),
+            weight: dog.weight,
+            height: dog.height,
+            temperament: dog.Temperaments[0].name ,
+            image: dog.image,
+            lifeSpan: dog.lifeSpan,
+            createdInDb : true
         }
-    });
+    })
+    return dogList
 
 };
 
@@ -59,7 +72,7 @@ const temperamentsDB = async (api) => {
 
     const tempDB = await Temperament.findAll();
 
-    if( await tempDB.length < 1){
+    if( await tempDB.length < 3){
         const tempAPI = await dataAPI(api);
         const temperaments = tempAPI.map(el => el.temperament);
 
@@ -73,6 +86,7 @@ const temperamentsDB = async (api) => {
                 });
             };
         });
+        return await tempDB
     };
 
     return await tempDB;
@@ -103,7 +117,9 @@ const createDog = async (req) => {
       });
     
       const temperamentDB = await Temperament.findAll({
-        where : { name : temperament }
+        where : { 
+            name : temperament 
+        }
       });
     
       await dogCreated.addTemperament(temperamentDB);
